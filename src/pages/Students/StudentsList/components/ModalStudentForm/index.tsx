@@ -48,13 +48,13 @@ const ModalStudentForm = ({
   } = useForm({
     resolver: yupResolver(studentSchema),
     defaultValues: {
-      id: undefined,
+      id: '',
       name: '',
       birthDate: new Date().toISOString().split('T')[0],
-      cpf: undefined,
-      city: undefined,
-      neighborhood: undefined,
-      address: undefined,
+      cpf: '',
+      city: '',
+      neighborhood: '',
+      address: '',
       planType: 'Mensal',
     },
     mode: 'onChange',
