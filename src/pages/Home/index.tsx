@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 
-// import { generateMockStudentsAndAddToDB } from '@/utils/mockData/studentsMock';
+import { generateMockStudentsAndAddToDB } from '@/utils/mockData/studentsMock';
 import { handleToastifyMessage } from '@/utils/toastify/toastifyMessage';
 
 const HomePage = () => {
@@ -12,7 +12,7 @@ const HomePage = () => {
   const handlePopulateStudents = async () => {
     setLoading(true);
 
-    // await generateMockStudentsAndAddToDB();
+    await generateMockStudentsAndAddToDB();
 
     setTimeout(() => {
       handleToastifyMessage({
@@ -60,7 +60,7 @@ const HomePage = () => {
             disabled={loading}
             loading={loading}
           >
-            Popular Alunos
+            Limpar + Popular Alunos
           </Button>
         </Grid>
       </Box>

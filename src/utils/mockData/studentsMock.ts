@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker/locale/pt_BR';
 
 import { addStudent } from '@/services/indexedDb/queries/student/addStudent';
+import { clearStudents } from '@/services/indexedDb/queries/student/clearStudents';
 
 import type { IStudent } from '@/customTypes/IStudent';
 import { PLAN_TYPES } from '@/customTypes/TPlanType';
@@ -83,6 +84,8 @@ export function generateMockStudents(count = 20): IStudent[] {
 }
 
 export async function generateMockStudentsAndAddToDB(count = 20): Promise<void> {
+  await clearStudents();
+
   const students = generateMockStudents(count);
 
   await Promise.all(students.map((student) => addStudent(student)));
