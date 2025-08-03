@@ -100,7 +100,6 @@ const ClassesList = () => {
             color="primary"
             size="medium"
             onClick={() => handleModalClassForm(true, '')}
-            sx={{ borderRadius: (theme) => theme.customBorderRadius.md }}
             startIcon={<AddIcon />}
           >
             Adicionar Aula

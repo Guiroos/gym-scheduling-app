@@ -26,7 +26,7 @@ const HomePage = () => {
   return (
     <Container maxWidth="md">
       <Box my={(theme) => theme.customSpacings.xxl} textAlign="center">
-        <img src="/gym.svg" alt="Gym" width={128} />
+        <img src="/gym.svg" alt="Gym" width={128} height={128} />
 
         <Typography variant="h4" component="h1" gutterBottom>
           Bem-vindo à Rede de Academias!

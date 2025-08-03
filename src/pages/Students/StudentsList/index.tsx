@@ -148,7 +148,7 @@ const StudentsList = () => {
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            size="small"
+            size="medium"
             onClick={() => handleModalStudentForm(true, '')}
             disabled={loading}
           >
