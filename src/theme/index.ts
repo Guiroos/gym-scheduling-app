@@ -54,6 +54,15 @@ const tempThemeForUtils = createTheme({
   shape: {
     borderRadius: 4, // Define o borderRadius base aqui
   },
+  breakpoints: {
+    values: {
+      xs: 0,      
+      sm: 480,    
+      md: 768,    
+      lg: 1024,   
+      xl: 1280,   
+    },
+  }
 });
 
 // Color palette
@@ -106,6 +115,9 @@ const palette = {
   divider: 'rgba(0, 0, 0, 0.12)',
 };
 
+// Breakpoints
+const breakpoints = tempThemeForUtils.breakpoints;
+
 // Typography
 const typography = {
   fontFamily: [
@@ -118,74 +130,112 @@ const typography = {
     'Arial',
     'sans-serif',
   ].join(','),
+  htmlFontSize: 16,
   h1: {
     fontWeight: 600,
-    fontSize: '2.5rem',
+    fontSize: '2rem',
     lineHeight: 1.2,
-    letterSpacing: '-0.5px',
+    [breakpoints.up('sm')]: {
+      fontSize: '2.5rem',
+    },
   },
   h2: {
     fontWeight: 600,
-    fontSize: '2rem',
+    fontSize: '1.75rem',
     lineHeight: 1.3,
-    letterSpacing: '-0.25px',
+    [breakpoints.up('sm')]: {
+      fontSize: '2rem',
+    },
   },
   h3: {
     fontWeight: 600,
-    fontSize: '1.75rem',
+    fontSize: '1.5rem',
     lineHeight: 1.35,
+    [breakpoints.up('sm')]: {
+      fontSize: '1.75rem',
+    },
   },
   h4: {
     fontWeight: 600,
     fontSize: '1.5rem',
     lineHeight: 1.4,
+    [breakpoints.up('sm')]: {
+      fontSize: '1.75rem',
+    },
   },
   h5: {
     fontWeight: 600,
     fontSize: '1.25rem',
     lineHeight: 1.5,
+    [breakpoints.up('sm')]: {
+      fontSize: '1.5rem',
+    },
   },
   h6: {
     fontWeight: 600,
     fontSize: '1.125rem',
     lineHeight: 1.6,
+    [breakpoints.up('sm')]: {
+      fontSize: '1.25rem',
+    },
   },
   subtitle1: {
     fontSize: '1rem',
     lineHeight: 1.5,
     letterSpacing: '0.15px',
+    [breakpoints.up('sm')]: {
+      fontSize: '1.25rem',
+    },
   },
   subtitle2: {
     fontSize: '0.875rem',
     lineHeight: 1.5,
     letterSpacing: '0.1px',
     fontWeight: 500,
+    [breakpoints.up('sm')]: {
+      fontSize: '1rem',
+    },
   },
   body1: {
     fontSize: '1rem',
     lineHeight: 1.5,
     letterSpacing: '0.15px',
+    [breakpoints.up('sm')]: {
+      fontSize: '1.25rem',
+    },
   },
   body2: {
     fontSize: '0.875rem',
     lineHeight: 1.5,
     letterSpacing: '0.15px',
+    [breakpoints.up('sm')]: {
+      fontSize: '1rem',
+    },
   },
   button: {
     textTransform: 'none' as const,
     fontWeight: 500,
     letterSpacing: '0.4px',
+    [breakpoints.up('sm')]: {
+      fontSize: '1.25rem',
+    },
   },
   caption: {
     fontSize: '0.75rem',
     lineHeight: 1.66,
     letterSpacing: '0.4px',
+    [breakpoints.up('sm')]: {
+      fontSize: '1rem',
+    },
   },
   overline: {
     fontSize: '0.75rem',
     lineHeight: 2.66,
     letterSpacing: '1px',
     textTransform: 'uppercase' as const,
+    [breakpoints.up('sm')]: {
+      fontSize: '1rem',
+    },
   },
 };
 
@@ -213,16 +263,7 @@ const customBorderRadius = {
   rounded: '50%',
 };
 
-// Breakpoints
-const breakpoints = {
-  values: {
-    xs: 0,
-    sm: 600,
-    md: 900,
-    lg: 1200,
-    xl: 1536,
-  },
-};
+
 
 // Custom shadows
 const customShadows = {
@@ -245,110 +286,57 @@ const baseTheme = createTheme({
   },
   components: {
     MuiCssBaseline: {
-      styleOverrides: {
+      styleOverrides: (theme) => ({
         html: {
           WebkitFontSmoothing: 'auto',
+          fontSize: '16px',
+          [theme.breakpoints.up('sm')]: {
+            fontSize: '16px',
+          },
+          [theme.breakpoints.up('md')]: {
+            fontSize: '16px',
+          },
         },
         body: {
-          margin: 0,
-          padding: 0,
-          minHeight: '100vh',
+          WebkitTapHighlightColor: 'transparent',
+          touchAction: 'manipulation',
+          textRendering: 'optimizeLegibility',
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
         },
-      },
+      }),
     },
     MuiButton: {
-      defaultProps: {
-        disableElevation: true,
-      },
       styleOverrides: {
         root: {
-          borderRadius: customBorderRadius.md,
-          padding: `${customSpacings.md} ${customSpacings.xl}`,
-          textTransform: 'none',
-          fontWeight: 500,
-        },
-        sizeLarge: {
-          padding: `${customSpacings.md} ${customSpacings.xl}`,
-          fontSize: '1rem',
-        },
-        sizeSmall: {
-          padding: `${customSpacings.sm} ${customSpacings.md}`,
-          fontSize: '0.875rem',
-        },
-        contained: {
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: customShadows.small,
+          minHeight: 48,
+          minWidth: 48,
+          padding: '8px 16px',
+          '&.MuiButton-contained': {
+            boxShadow: 'none',
+            '&:hover': {
+              boxShadow: customShadows.small,
+            },
           },
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: customBorderRadius.md,
-          boxShadow: customShadows.small,
-          '&:hover': {
-            boxShadow: customShadows.medium,
-          },
-        },
-      },
-    },
-    MuiCardContent: {
-      styleOverrides: {
-        root: {
-          padding: customSpacings.md,
-          '&:last-child': {
-            paddingBottom: customSpacings.md,
-          },
-        },
-      },
-    },
-    MuiAppBar: {
-      defaultProps: {
-        elevation: 0,
-      },
-      styleOverrides: {
-        root: {
-          backgroundColor: palette.background.paper,
-          color: palette.text.primary,
-          borderBottom: `1px solid ${palette.divider}`,
         },
       },
     },
     MuiTextField: {
       defaultProps: {
-        fullWidth: true,
         variant: 'outlined',
+        size: 'medium',
       },
-    },
-    MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: customBorderRadius.sm,
+          '& .MuiOutlinedInput-root': {
+            borderRadius: customBorderRadius.md,
+          },
         },
       },
     },
-    MuiContainer: {
-      styleOverrides: {
-        root: {
-          padding: `${customSpacings.md} ${customSpacings.xxl}`,
-        },
-      },
-    },
-
-    MuiDialogTitle: {
-      styleOverrides: {
-        root: {
-          padding: `${customSpacings.md} ${customSpacings.xl}`,
-        },
-      },
-    },
-    MuiDialogContent: {
-      styleOverrides: {
-        root: {
-          padding: `${customSpacings.md} ${customSpacings.xl}`,
-        },
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true, 
       },
     },
   },
