@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import ClassIcon from '@mui/icons-material/Class';
@@ -16,6 +16,8 @@ import {
   useTheme,
 } from '@mui/material';
 
+import useScrollPosition from '@/hooks/useScrollPosition';
+
 import type { INavItem } from './types';
 
 export const AppNavigation = () => {
@@ -23,18 +25,9 @@ export const AppNavigation = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { scrolled } = useScrollPosition(10);
 
   const [value, setValue] = useState(location.pathname);
-  const [scrolled, setScrolled] = useState(false);
-
-  const handleScroll = useCallback(() => {
-    setScrolled(window.scrollY > 10);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
 
   useEffect(() => {
     setValue(location.pathname);
@@ -78,7 +71,7 @@ export const AppNavigation = () => {
       aria-label={item.label}
       sx={{
         minWidth: '72px',
-        padding: '8px 0 10px',
+        padding: (theme) => theme.customSpacings.md,
         transition: 'all 0.2s ease',
         '&.Mui-selected': {
           color: theme.palette.primary.main,
@@ -126,7 +119,7 @@ export const AppNavigation = () => {
                 bgcolor: 'transparent',
                 '& .MuiBottomNavigationAction-root': {
                   minWidth: 'auto',
-                  padding: '6px 16px',
+                  padding: (theme) => theme.customSpacings.md,
                   color: 'text.secondary',
                   borderRadius: theme.shape.borderRadius,
                   '&.Mui-selected': {
@@ -165,7 +158,7 @@ export const AppNavigation = () => {
           boxShadow: '0 -2px 10px rgba(0,0,0,0.05)',
           '& .MuiBottomNavigationAction-root': {
             minWidth: '72px',
-            padding: '8px 0 10px',
+            padding: (theme) => theme.customSpacings.md,
             transition: 'all 0.2s ease',
             '&.Mui-selected': {
               color: theme.palette.primary.main,
