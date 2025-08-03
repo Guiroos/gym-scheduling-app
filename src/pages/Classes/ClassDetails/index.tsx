@@ -59,7 +59,6 @@ const ClassDetails = () => {
   const [addParticipantError, setAddParticipantError] = useState<string | null>(null);
 
   const [modalClassForm, setModalClassForm] = useState(false);
-  console.log('🚀 ~ ClassDetails ~ modalClassForm:', modalClassForm);
   const [modalConfirmDelete, setModalConfirmDelete] = useState(false);
   const [modalConfirmFinalize, setModalConfirmFinalize] = useState(false);
 
