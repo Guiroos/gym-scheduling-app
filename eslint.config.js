@@ -56,7 +56,6 @@ const baseConfig = [
             ['^node:'],
             ['^react', '^type:react'],
             ['^@?\\w', '^type:@?\\w'],
-            ['^@/contexts/', '^type:@/contexts/'],
             ['^@/components/', '^type:@/components/'],
             ['^@/layouts/', '^type:@/layouts/'],
             ['^@/pages/', '^type:@/pages/'],
