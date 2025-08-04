@@ -1,10 +1,26 @@
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
+import compression from 'vite-plugin-compression';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  build: {
+    chunkSizeWarningLimit: 1000, // Set the limit to 1000KB (1MB)
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'mui-vendor': [
+            '@mui/material',
+            '@mui/icons-material',
+            '@emotion/react',
+            '@emotion/styled',
+          ],
+        },
+      },
+    },
+  },
 
   resolve: {
     alias: [
@@ -21,4 +37,6 @@ export default defineConfig({
       { find: '@/utils', replacement: path.resolve(__dirname, 'src/utils') },
     ],
   },
+
+  plugins: [react(), compression()],
 });
