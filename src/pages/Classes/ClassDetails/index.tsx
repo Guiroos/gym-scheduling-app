@@ -6,21 +6,19 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
+import { useMediaQuery, useTheme } from '@mui/material';
 import {
+  Autocomplete,
   Box,
   Button,
   CircularProgress,
   Container,
-  FormControl,
-  FormHelperText,
   IconButton,
-  InputLabel,
   List,
   ListItem,
   ListItemText,
-  MenuItem,
   Paper,
-  Select,
+  TextField,
   Typography,
 } from '@mui/material';
 
@@ -45,6 +43,8 @@ import type { IStudent } from '@/customTypes/IStudent';
 import ModalClassForm from '../ClassesList/components/ModalClassForm';
 
 const ClassDetails = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const { classId } = useParams<{ classId: string }>();
 
@@ -114,7 +114,10 @@ const ClassDetails = () => {
 
     try {
       const students = await getAllStudents();
-      setAllStudents(students);
+      const validStudents = students
+        .filter((s): s is IStudent => s !== undefined)
+        .sort((a, b) => a.name.localeCompare(b.name));
+      setAllStudents(validStudents);
     } catch (err) {
       console.error('Erro ao buscar alunos para seleção:', err);
       handleToastifyMessage({
@@ -350,6 +353,7 @@ const ClassDetails = () => {
             <Button
               variant="contained"
               color="error"
+              fullWidth={isMobile}
               onClick={() => handleModalConfirmDelete(true)}
               startIcon={<DeleteForeverIcon />}
               sx={{ borderRadius: (theme) => theme.customBorderRadius.sm }}
@@ -361,6 +365,7 @@ const ClassDetails = () => {
             <Button
               variant="contained"
               color="success"
+              fullWidth={isMobile}
               onClick={() => handleModalConfirmFinalize(true)}
               startIcon={<CheckCircleIcon />}
               sx={{ borderRadius: (theme) => theme.customBorderRadius.sm }}
@@ -385,49 +390,53 @@ const ClassDetails = () => {
             </Typography>
 
             <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', mb: 2 }}>
-              <FormControl sx={{ flexGrow: 1 }} error={!!addParticipantError}>
-                <InputLabel id="student-select-label">Selecione um aluno</InputLabel>
-                <Select
-                  label="Selecione um aluno"
-                  labelId="student-select-label"
-                  value={selectedStudentId}
-                  onChange={(e) => {
-                    setSelectedStudentId(e.target.value as string);
-                    setAddParticipantError(null); // Limpa o erro ao mudar seleção
-                  }}
-                  disabled={loadingStudents || isModifying}
-                >
-                  {allStudents.length === 0 && !loadingStudents && (
-                    <MenuItem disabled>Nenhum aluno disponível</MenuItem>
-                  )}
-
-                  {loadingStudents && (
-                    <MenuItem disabled>
-                      <CircularProgress size={16} /> Carregando alunos...
-                    </MenuItem>
-                  )}
-
-                  {allStudents.map((student) => (
-                    <MenuItem
-                      key={student.id}
-                      value={student.id}
-                      disabled={classDetails.studentsIds.includes(student.id)}
-                    >
-                      {student.name} (
-                      {student.cpf ? `CPF: ${formatCpf(student.cpf)}` : 'Nenhum CPF'})
-                    </MenuItem>
-                  ))}
-                </Select>
-
-                {addParticipantError && <FormHelperText>{addParticipantError}</FormHelperText>}
-              </FormControl>
+              <Autocomplete
+                id="student-select"
+                options={allStudents}
+                loading={loadingStudents}
+                getOptionLabel={(student) =>
+                  `${student.name} (${student.cpf ? formatCpf(student.cpf) : 'Nenhum CPF'})`
+                }
+                value={allStudents.find((s) => s.id === selectedStudentId) || null}
+                onChange={(_, newValue) => {
+                  setSelectedStudentId(newValue?.id || '');
+                  setAddParticipantError(null);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Selecione um aluno"
+                    error={!!addParticipantError}
+                    helperText={addParticipantError}
+                  />
+                )}
+                fullWidth
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                getOptionDisabled={(option) => classDetails.studentsIds.includes(option.id)}
+                noOptionsText="Nenhum aluno encontrado"
+                sx={{
+                  flexGrow: 1,
+                  '& .MuiOutlinedInput-root': {
+                    height: '56px', // Match the button height
+                    '& fieldset': {
+                      borderTopRightRadius: 0,
+                      borderBottomRightRadius: 0,
+                    },
+                  },
+                }}
+              />
 
               <Button
                 variant="contained"
                 color="primary"
                 onClick={handleAddParticipant}
                 startIcon={<AddIcon />}
-                sx={{ height: '56px', borderRadius: (theme) => theme.customBorderRadius.sm }}
+                sx={{
+                  height: '56px',
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
+                  whiteSpace: 'nowrap',
+                }}
                 disabled={!selectedStudentId || isModifying}
               >
                 Adicionar
