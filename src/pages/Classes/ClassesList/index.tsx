@@ -47,7 +47,9 @@ const ClassesList = () => {
 
   const [classes, setClasses] = useState<IClass[]>([]);
   const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
-  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState<string>(
+    new Date(Date.now() - new Date().getTimezoneOffset() * 60 * 1000).toISOString().split('T')[0]
+  );
 
   const [modalClassForm, setModalClassForm] = useState(false);
   const [modalConfirmDelete, setModalConfirmDelete] = useState(false);
