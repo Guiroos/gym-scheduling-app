@@ -114,7 +114,10 @@ const ClassDetails = () => {
 
     try {
       const students = await getAllStudents();
-      setAllStudents(students);
+      const validStudents = students
+        .filter((s): s is IStudent => s !== undefined)
+        .sort((a, b) => a.name.localeCompare(b.name));
+      setAllStudents(validStudents);
     } catch (err) {
       console.error('Erro ao buscar alunos para seleção:', err);
       handleToastifyMessage({
