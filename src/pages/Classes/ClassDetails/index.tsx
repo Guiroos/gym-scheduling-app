@@ -184,8 +184,9 @@ const ClassDetails = () => {
 
     try {
       await finalizeClass(classId);
-      handleToastifyMessage({ message: 'Aula concluída com sucesso', type: 'success' });
       handleGetClassDetails(classId);
+      handleModalConfirmFinalize(false);
+      handleToastifyMessage({ message: 'Aula finalizada com sucesso', type: 'success' });
     } catch (err) {
       handleToastifyMessage({
         message: `Erro ao concluir aula: ${err instanceof Error ? err.message : 'Erro desconhecido'}`,
@@ -203,6 +204,7 @@ const ClassDetails = () => {
 
     try {
       await deleteClass(classId);
+      handleModalConfirmDelete(false);
       handleToastifyMessage({ message: 'Aula excluída com sucesso', type: 'success' });
       navigate('/classes');
     } catch (err) {

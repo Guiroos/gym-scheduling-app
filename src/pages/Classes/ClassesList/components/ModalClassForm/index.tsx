@@ -52,7 +52,9 @@ const ClassFormModal = ({
       id: '',
       description: '',
       classType: '',
-      datetime: new Date(new Date().getTime() + 60 * 60 * 1000).toISOString().slice(0, 16),
+      datetime: new Date(Date.now() - new Date().getTimezoneOffset() * 60 * 1000)
+        .toISOString()
+        .split('.')[0],
       maxCapacity: 10,
       status: 'Aberta',
       allowPostStartRegistration: false,
