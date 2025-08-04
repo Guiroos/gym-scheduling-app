@@ -82,6 +82,7 @@ const ClassFormModal = ({
       setValue('maxCapacity', classData.maxCapacity);
       setValue('status', classData.status);
       setValue('allowPostStartRegistration', classData.allowPostStartRegistration);
+      setValue('studentsIds', classData.studentsIds);
     } catch (error) {
       handleToastifyMessage({
         message: `Erro ao buscar aula: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
@@ -92,6 +93,14 @@ const ClassFormModal = ({
 
   const onSubmit = useCallback(
     async (data: InferType<typeof classSchema>) => {
+      if (data.studentsIds.length > data.maxCapacity) {
+        handleToastifyMessage({
+          message: 'A quantidade de alunos excede a capacidade máxima',
+          type: 'error',
+        });
+        return;
+      }
+
       try {
         const classToSave: IClass = {
           ...data,
