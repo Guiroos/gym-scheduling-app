@@ -30,8 +30,6 @@ import ConfirmationModal from '@/components/ConfirmationModal';
 import { DataTable } from '@/components/DataTable';
 import type { ColumnDef } from '@/components/DataTable/types';
 
-import useScrollPosition from '@/hooks/useScrollPosition';
-
 import { deleteClass } from '@/services/indexedDb/queries/class/deleteClass';
 
 import { getClassesByDateRange } from '@/queries/class/getClassesByDataRange';
